@@ -11,21 +11,17 @@ class QueryBuilder
 
     public function selectAll($table)
     {
-        // pripremamo sta cemo da izvrsimo u mysql
-        $statement = $this->pdo->prepare("SELECT * FROM $table");
+        $handle = $this->pdo->prepare("SELECT * FROM $table");
+        $handle->execute();
 
-        // izvrsavamo gore sta je pripremljeno
-        $statement->execute();
-
-        // ovako prikazujemo sta se nalazi u ovom statementu
-        return $statement->fetchAll(PDO::FETCH_OBJ);
+        return $handle->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function sortByCity($cityId)
     {
-        $statement = $this->pdo->prepare("SELECT * FROM realestates WHERE city_id = $cityId");
-        $statement->execute();
+        $handle = $this->pdo->prepare("SELECT * FROM realestates WHERE city_id = $cityId");
+        $handle->execute();
 
-        return $statement->fetchAll(PDO::FETCH_OBJ);
+        return $handle->fetchAll(PDO::FETCH_OBJ);
     }
 }

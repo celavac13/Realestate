@@ -4,8 +4,6 @@ class RealestateController
 {
     public function show(QueryBuilder $query, $cities, $totalInCity)
     {
-        session_start();
-
         $cityId = [
             'cacak' => 1,
             'gornji-milanovac' => 2,

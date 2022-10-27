@@ -8,45 +8,54 @@ class LoginUser
         $this->query = $query;
     }
 
-    public function login($email, $password)
+    public function validate(string $email, string $password)
     {
-        session_start();
+        $result = [];
+        if (isset($email, $password) && !empty($email) && !empty($password)) {
+            $email = trim($email);
+            $password = trim($password);
 
-        $errors = [];
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $sql = "SELECT * FROM users WHERE email = :email";
+                $handle = $this->query->pdo->prepare($sql);
+                $params = ['email' => $email];
+                $handle->execute($params);
 
-        if (isset($_POST['submit'])) {
-            if (isset($email, $password) && !empty($email) && !empty($password)) {
-                $email = trim($email);
-                $password = trim($password);
+                if ($handle->rowCount() > 0) {
+                    $getRow = $handle->fetch(PDO::FETCH_ASSOC);
 
-                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $sql = "SELECT * FROM users WHERE email = :email";
-                    $handle = $this->query->pdo->prepare($sql);
-                    $params = ['email' => $email];
-                    $handle->execute($params);
+                    if ($password == $getRow['password']) {
+                        $result['userInfo'] = $getRow;
 
-                    if ($handle->rowCount() > 0) {
-                        $getRow = $handle->fetch(PDO::FETCH_ASSOC);
-
-                        if ($password == $getRow['password']) {
-                            unset($getRow['password']);
-                            $_SESSION = $getRow;
-                            header('location: http://www.realestate.local');
-                            exit();
-                        } else {
-                            $errors[] = "Wrong Email or Password";
-                        }
+                        return $result;
                     } else {
-                        $errors[] = "Wrong Email or Password";
+                        $result['errors'] = 'Email or password are not correct';
+
+                        return $result;
                     }
                 } else {
-                    $errors[] = "Email address is not valid";
+                    $result['errors'] = 'Email or password are not correct';
+
+                    return $result;
                 }
             } else {
-                $errors[] = "Email and Password are required";
-            }
-        }
+                $result['errors'] = 'Email or password are not correct';
 
-        return $errors;
+                return $result;
+            }
+        } else {
+            $result['errors'] = 'You must provide email and password';
+
+            return $result;
+        }
+    }
+
+    public function login(array $userInfo)
+    {
+        extract($userInfo);
+        unset($userInfo['password']);
+        $_SESSION = $userInfo;
+        header('location: http://www.realestate.local');
+        exit();
     }
 }

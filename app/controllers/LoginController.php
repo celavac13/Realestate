@@ -8,10 +8,19 @@ class LoginController
     public function login(QueryBuilder $query)
     {
         $loginUserAction = new LoginUser($query);
+        $result = [];
         $errors = [];
 
         if ($_POST) {
-            $errors = $loginUserAction->login($_POST['email'], $_POST['password']);
+            $result = $loginUserAction->validate($_POST['email'], $_POST['password']);
+            if (array_key_exists(
+                'userInfo',
+                $result
+            )) {
+                $loginUserAction->login($result['userInfo']);
+            } else {
+                $errors[] = $result['errors'];
+            }
         }
         require 'app/views/login.view.php';
     }
