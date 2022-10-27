@@ -48,7 +48,7 @@ class RegisterUser
 
                             $success = 'User has been created successfully';
                         } catch (PDOException $e) {
-                            $e->getMessage();
+                            $errors[] = $e->getMessage();
                         }
                     } else {
                         // $valUsername = $username;

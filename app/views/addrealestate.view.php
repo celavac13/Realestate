@@ -23,4 +23,8 @@
     <button class="mt-8 w-96 p-4 bg-gray-700 rounded-md m-auto text-white hover:bg-gray-900" type="submit" name="submit">Add Realestate</button>
 </form>
 
+<?php foreach ($errors as $error) : ?>
+    <p><?= $error; ?></p>
+<?php endforeach; ?>
+
 <?php require('app/views/partials/footer.php'); ?>
