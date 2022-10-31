@@ -9,5 +9,4 @@ $query = require 'core/bootstrap.php';
 $cities = $query->selectAll("cities");
 $totalInCity = fn ($cityId) => $query->sortByCity($cityId);
 
-
 require 'app/routes.php';

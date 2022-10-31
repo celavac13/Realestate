@@ -8,20 +8,28 @@ class LoginController
     public function login(QueryBuilder $query)
     {
         $loginUserAction = new LoginUser($query);
-        $result = [];
         $errors = [];
 
         if ($_POST) {
-            $result = $loginUserAction->validate($_POST['email'], $_POST['password']);
-            if (array_key_exists(
-                'userInfo',
-                $result
-            )) {
-                $loginUserAction->login($result['userInfo']);
+            $params = [
+                'email' => $_POST['email'],
+                'password' => $_POST['password']
+            ];
+
+            try {
+                $result = $loginUserAction->validate($params);
+            } catch (PDOException $e) {
+                $errors[] = $e->getMessage();
+            }
+
+            if (array_key_exists('data', $result)) {
+                $loginUserAction->login($result['data']);
+                header('location: http://www.realestate.local');
             } else {
                 $errors[] = $result['errors'];
             }
         }
+
         require 'app/views/login.view.php';
     }
 
@@ -29,5 +37,6 @@ class LoginController
     {
         $logoutUserAction = new LogoutUser();
         $logoutUserAction->logout();
+        header('location: http://www.realestate.local');
     }
 }

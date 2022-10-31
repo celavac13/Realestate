@@ -8,8 +8,9 @@ class RegisterUser
         $this->query = $query;
     }
 
-    public function validate(string $username, string $name, string $email, string $password)
+    public function validate(array $params)
     {
+        extract($params);
         $result = [];
 
         if (
@@ -31,12 +32,7 @@ class RegisterUser
                 $handle->execute($params);
 
                 if ($handle->rowCount() == 0) {
-                    $result['params'] = [
-                        'username' => $username,
-                        'name' => $name,
-                        'email' => $email,
-                        'password' => $password
-                    ];
+                    $result['validate'] = true;
 
                     return $result;
                 } else {
@@ -73,24 +69,21 @@ class RegisterUser
         }
     }
 
-    public function register(array $params)
+    public function register(string $username, string $name, string $email, string $password)
     {
-        extract($params);
+        $username = trim($username);
+        $name = trim($name);
+        $email = trim($email);
+        $password = trim($password);
         $query = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
 
-        try {
-            $handle = $this->query->pdo->prepare($query);
-            $params = [
-                ':username' => $username,
-                ':name' => $name,
-                ':email' => $email,
-                ':password' => $password
-            ];
-
-            $handle->execute($params);
-            header('location: http://www.realestate.local');
-        } catch (PDOException $e) {
-            $errors[] = $e->getMessage();
-        }
+        $handle = $this->query->pdo->prepare($query);
+        $params = [
+            ':username' => $username,
+            ':name' => $name,
+            ':email' => $email,
+            ':password' => $password
+        ];
+        $handle->execute($params);
     }
 }

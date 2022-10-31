@@ -8,8 +8,9 @@ class LoginUser
         $this->query = $query;
     }
 
-    public function validate(string $email, string $password)
+    public function validate($params)
     {
+        extract($params);
         $result = [];
         if (isset($email, $password) && !empty($email) && !empty($password)) {
             $email = trim($email);
@@ -25,37 +26,30 @@ class LoginUser
                     $getRow = $handle->fetch(PDO::FETCH_ASSOC);
 
                     if ($password == $getRow['password']) {
-                        $result['userInfo'] = $getRow;
+                        $result['data'] = $getRow;
 
                         return $result;
                     } else {
                         $result['errors'] = 'Email or password are not correct';
-
                         return $result;
                     }
                 } else {
                     $result['errors'] = 'Email or password are not correct';
-
                     return $result;
                 }
             } else {
                 $result['errors'] = 'Email or password are not correct';
-
                 return $result;
             }
         } else {
             $result['errors'] = 'You must provide email and password';
-
             return $result;
         }
     }
 
-    public function login(array $userInfo)
+    public function login($userInfo)
     {
-        extract($userInfo);
         unset($userInfo['password']);
         $_SESSION = $userInfo;
-        header('location: http://www.realestate.local');
-        exit();
     }
 }

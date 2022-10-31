@@ -8,8 +8,9 @@ class AddNewRealestate
         $this->query = $query;
     }
 
-    public function validate(int $userId, int $cityId, string $title, string $description, int $price, array $image)
+    public function validate($params)
     {
+        extract($params);
         $result = [];
         if (
             isset($userId, $cityId, $title, $description, $price, $image)
@@ -20,37 +21,23 @@ class AddNewRealestate
             && !empty($price)
             && !empty($image)
         ) {
-            $targetFile =  "/public/images/" . $image['name'];
+            $result = [
+                'validation' => true
+            ];
 
-            if (move_uploaded_file($image['tmp_name'], SITE_ROOT . $targetFile)) {
-                $result['params'] = [
-                    'userId' => $userId,
-                    'cityId' => $cityId,
-                    'title' => $title,
-                    'description' => $description,
-                    'price' => $price,
-                    'image' => $image,
-                    'targetFile' => $targetFile
-                ];
-
-                return $result;
-            } else {
-                $result['errors'] = 'Image has not be uploaded';
-
-                return $result;
-            }
+            return $result;
         } else {
             $result['errors'] = 'Fields must be fullfiled';
-
             return $result;
         }
     }
 
-    public function addRealestate($params)
+    public function addRealestate(int $userId, int $cityId, string $title, string $description, int $price, array $image)
     {
-        extract($params);
+        $targetFile =  "/public/images/" . $image['name'];
         $query = "INSERT INTO realestates (user_id, city_id, title, description, price, image) VALUES (:userId, :cityId, :title, :description, :price, :image)";
-        try {
+
+        if (move_uploaded_file($image['tmp_name'], SITE_ROOT . $targetFile)) {
             $handle = $this->query->pdo->prepare($query);
             $params = [
                 ':userId' => $userId,
@@ -61,10 +48,9 @@ class AddNewRealestate
                 ':image' => $targetFile
             ];
             $handle->execute($params);
-            header('location: http://www.realestate.local');
-            exit();
-        } catch (PDOException $e) {
-            $e->getMessage();
+        } else {
+
+            return 'Image has not be uploaded';
         }
     }
 }

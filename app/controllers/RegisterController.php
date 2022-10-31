@@ -9,17 +9,24 @@ class RegisterController
     public function register(QueryBuilder $query)
     {
         $registerUserAction = new RegisterUser($query);
-        $result = [];
         $errors = [];
 
         if ($_POST) {
-            $result = $registerUserAction->validate($_POST['username'], $_POST['name'], $_POST['email'], $_POST['password']);
+            $params = [
+                'username' => $_POST['username'],
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'password' => $_POST['password']
+            ];
+            $result = $registerUserAction->validate($params);
 
-            if (array_key_exists(
-                'params',
-                $result
-            )) {
-                $registerUserAction->register($result['params']);
+            if (array_key_exists('validate', $result)) {
+                try {
+                    $registerUserAction->register($_POST['username'], $_POST['name'], $_POST['email'], $_POST['password']);
+                    header('location: http://www.realestate.local');
+                } catch (PDOException $e) {
+                    $errors[] = $e->getMessage();
+                }
             } else {
                 $errors[] = $result['errors'];
             }
