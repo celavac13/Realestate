@@ -1,0 +1,1 @@
+<a href="/" class="text-blue-600 text-xl hover:text-blue-800">Back to Home</a>

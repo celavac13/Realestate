@@ -4,14 +4,16 @@ require 'app/actions/AddNewRealestate.php';
 
 class AddRealestateController
 {
-    public function show(QueryBuilder $query, $cities)
+    //store
+    public function store(QueryBuilder $query)
     {
         $addNewAction = new AddNewRealestate($query);
+        // dodati errore u sessiju
         $errors = [];
 
         if ($_POST) {
             $params = [
-                'userId' => $_SESSION['id'],
+                'userId' => $_SESSION['user']['id'],
                 'cityId' => $_POST['estate'],
                 'title' => $_POST['title'],
                 'description' => $_POST['description'],
@@ -23,9 +25,9 @@ class AddRealestateController
             if (array_key_exists('validate', $result)) {
 
                 try {
-                    $errors[] = $addNewAction->addRealestate($_SESSION['id'], $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
+                    $errors[] = $addNewAction->addRealestate($_SESSION['user']['id'], $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
                     header('location: http://www.realestate.local');
-                } catch (PDOException $e) {
+                } catch (PDOException | Exception $e) {
 
                     $errors[] = $e->getMessage();
                 }
@@ -35,6 +37,14 @@ class AddRealestateController
             }
         }
 
+        $_SESSION['errors'] = $errors;
+    }
+
+    public function create($cities)
+    {
+        $errors = $_SESSION['errors'];
         require 'app/views/addrealestate.view.php';
     }
+    // ovde posle prikazati te errore
+    // napravi create
 }

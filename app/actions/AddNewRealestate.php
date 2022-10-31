@@ -22,7 +22,7 @@ class AddNewRealestate
             && !empty($image)
         ) {
             $result = [
-                'validation' => true
+                'validate' => true
             ];
 
             return $result;
@@ -50,7 +50,7 @@ class AddNewRealestate
             $handle->execute($params);
         } else {
 
-            return 'Image has not be uploaded';
+            throw new Exception('Image has not be uploaded');
         }
     }
 }

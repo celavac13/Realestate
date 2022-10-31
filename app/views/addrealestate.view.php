@@ -9,7 +9,7 @@
     </select>
 
     <label class="text-sm mt-3" name="title">Title</label>
-    <input class="rounded-md" type="text" name="title" id="title" required>
+    <input class="rounded-md" type="text" name="title" id="title">
 
     <label class="text-sm mt-3" name="description">Description</label>
     <textarea class="rounded-md p-2" name="description" id="description" required> </textarea>

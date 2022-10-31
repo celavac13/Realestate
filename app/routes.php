@@ -9,7 +9,13 @@ switch ($request) {
         require 'app/controllers/index.php';
         break;
 
-    case 'view-estate':
+    case 'city':
+        require 'app/controllers/CityController.php';
+        $realestates = new CityController;
+        $realestates->show($query, $cities, $totalInCity);
+        break;
+
+    case 'estate':
         require 'app/controllers/RealestateController.php';
         $realestate = new RealestateController;
         $realestate->show($query, $cities, $totalInCity);
@@ -36,7 +42,14 @@ switch ($request) {
     case 'add-realestate':
         require 'app/controllers/AddRealestateController.php';
         $addNew = new AddRealestateController;
-        $addNew->show($query, $cities);
+        $addNew->store($query);
+        $addNew->create($cities);
+        break;
+
+    case 'favourites':
+        require 'app/controllers/FavouritesController.php';
+        $favourites = new FavouritesController;
+        $favourites->show($query);
         break;
 
     default:

@@ -1,4 +1,5 @@
 <?php require('partials/header.php'); ?>
+<?php require('partials/homeLink.php') ?>
 
 <form action="/register" method="POST" class="flex flex-col w-1/2 m-auto mt-10">
     <label class="text-sm mt-3" name="username">Username</label>

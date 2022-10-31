@@ -50,6 +50,6 @@ class LoginUser
     public function login($userInfo)
     {
         unset($userInfo['password']);
-        $_SESSION = $userInfo;
+        $_SESSION['user'] = $userInfo;
     }
 }

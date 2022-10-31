@@ -7,6 +7,6 @@ define('SITE_ROOT', realpath(dirname(__FILE__)));
 $query = require 'core/bootstrap.php';
 
 $cities = $query->selectAll("cities");
-$totalInCity = fn ($cityId) => $query->sortByCity($cityId);
+$totalInCity = fn ($slug) => $query->sortByCity($slug);
 
 require 'app/routes.php';
