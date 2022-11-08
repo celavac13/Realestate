@@ -53,4 +53,17 @@ class QueryBuilder
 
         return $handle->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public function allFavourites(int $userId)
+    {
+        $handle = $this->pdo->prepare(
+            "SELECT realestate_id FROM favourites WHERE user_id = :user_id"
+        );
+        $params = [
+            ':user_id' => $userId
+        ];
+        $handle->execute($params);
+
+        return $handle->fetchAll(PDO::FETCH_OBJ);
+    }
 }

@@ -9,6 +9,10 @@ switch ($request) {
         require 'app/controllers/index.php';
         break;
 
+    case 'test':
+        require 'app/favourites.php';
+        break;
+
     case 'city':
         require 'app/controllers/CityController.php';
         $realestates = new CityController;
