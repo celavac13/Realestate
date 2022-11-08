@@ -9,8 +9,16 @@ switch ($request) {
         require 'app/controllers/index.php';
         break;
 
-    case 'test':
-        require 'app/favourites.php';
+    case 'add-favourites':
+        require 'app/controllers/FavouritesController.php';
+        $addFavourites = new FavouritesController;
+        $addFavourites->addToFavourites($query);
+        break;
+
+    case 'remove-favourites':
+        require 'app/controllers/FavouritesController.php';
+        $addFavourites = new FavouritesController;
+        $addFavourites->removeFromFavourites($query);
         break;
 
     case 'city':

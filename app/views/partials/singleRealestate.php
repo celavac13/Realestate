@@ -6,6 +6,7 @@
         <img src="<?= $realestate->image; ?>" alt="">
         <p class="text-md"><?= $realestate->description; ?></p>
         <i class="fa fa-heart <?= $isFavourite ? "liked" : "" ?>" id="likeBtn" style="font-size:48px;"></i>
+        <p class="text-md" id="successMsg"></p>
     </div>
 
 <?php else : ?>
