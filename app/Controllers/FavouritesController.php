@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Controllers;
+
+use Core\Database\QueryBuilder;
+
 class FavouritesController
 {
     public function show(QueryBuilder $query)

@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Actions;
+
+use Core\Database\QueryBuilder;
+
 class RegisterUser
 {
     protected QueryBuilder $query;

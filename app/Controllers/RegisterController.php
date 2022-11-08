@@ -1,6 +1,11 @@
 <?php
 
-use LDAP\Result;
+namespace App\Controllers;
+
+use App\Actions\RegisterUser;
+use PDOException;
+
+use Core\Database\QueryBuilder;
 
 require __DIR__ . '/../actions/RegisterUser.php';
 

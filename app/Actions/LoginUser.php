@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Actions;
+
+use Core\Database\QueryBuilder;
+use PDO;
+
 class LoginUser
 {
     protected QueryBuilder $query;

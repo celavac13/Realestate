@@ -1,5 +1,12 @@
 <?php
 
+namespace App\Controllers;
+
+use Core\Database\QueryBuilder;
+use App\Actions\LoginUser;
+use App\Actions\LogoutUser;
+use PDOException;
+
 require __DIR__ . '/../actions/LoginUser.php';
 require __DIR__ . '/../actions/LogoutUser.php';
 

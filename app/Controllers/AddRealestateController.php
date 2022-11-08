@@ -1,5 +1,12 @@
 <?php
 
+namespace App\Controllers;
+
+use Core\Database\QueryBuilder;
+use App\Actions\AddNewRealestate;
+use PDOException;
+use FFI\Exception;
+
 require 'app/actions/AddNewRealestate.php';
 
 class AddRealestateController

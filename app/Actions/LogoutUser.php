@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Actions;
+
 class LogoutUser
 {
     public function logout()

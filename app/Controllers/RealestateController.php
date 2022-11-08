@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Controllers;
+
+use Core\Database\QueryBuilder;
+
 class RealestateController
 {
     public function show(QueryBuilder $query, $cities, $totalInCity)

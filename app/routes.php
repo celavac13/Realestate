@@ -9,18 +9,6 @@ switch ($request) {
         require 'app/controllers/index.php';
         break;
 
-    case 'add-favourites':
-        require 'app/controllers/FavouritesController.php';
-        $addFavourites = new FavouritesController;
-        $addFavourites->addToFavourites($query);
-        break;
-
-    case 'remove-favourites':
-        require 'app/controllers/FavouritesController.php';
-        $addFavourites = new FavouritesController;
-        $addFavourites->removeFromFavourites($query);
-        break;
-
     case 'city':
         require 'app/controllers/CityController.php';
         $realestates = new CityController;
@@ -62,6 +50,18 @@ switch ($request) {
         require 'app/controllers/FavouritesController.php';
         $favourites = new FavouritesController;
         $favourites->show($query);
+        break;
+
+    case 'add-favourites':
+        require 'app/controllers/FavouritesController.php';
+        $addFavourites = new FavouritesController;
+        $addFavourites->addToFavourites($query);
+        break;
+
+    case 'remove-favourites':
+        require 'app/controllers/FavouritesController.php';
+        $addFavourites = new FavouritesController;
+        $addFavourites->removeFromFavourites($query);
         break;
 
     default:

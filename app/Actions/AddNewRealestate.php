@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Actions;
+
+use Core\Database\QueryBuilder;
+use FFI\Exception;
+
 class AddNewRealestate
 {
     protected QueryBuilder $query;
