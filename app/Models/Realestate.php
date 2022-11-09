@@ -78,7 +78,7 @@ class Realestate
         $this->image = $image;
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
