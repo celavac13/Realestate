@@ -5,7 +5,6 @@ $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 switch ($request) {
 
     case '':
-    case '/':
         $homePage = new App\Controllers\IndexController;
         $homePage->index();
         break;
@@ -23,7 +22,7 @@ switch ($request) {
 
     case 'login':
         $login = new App\Controllers\LoginController;
-        $login->login($query);
+        $login->login();
         break;
 
     case 'logout':

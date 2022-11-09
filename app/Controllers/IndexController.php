@@ -9,9 +9,9 @@ class IndexController
 {
     public function index()
     {
-        $realestates = Realestate::selectAll();
-        $cities = City::selectAll();
-        $totalInCity = fn ($slug) => City::sortByCity($slug);
+        $realestates = Realestate::all();
+        $cities = City::all();
+        $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
         require 'views/index.view.php';
     }

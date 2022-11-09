@@ -12,9 +12,9 @@
             </li>
             <?php foreach ($cities as $city) : ?>
                 <li>
-                    <a href="/city?city=<?= $city->slug; ?>" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        <?= $city->name; ?>
-                        <?= sizeOf($totalInCity($city->slug)); ?>
+                    <a href="/city?city=<?= $city->getSlug(); ?>" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <?= $city->getName(); ?>
+                        <?= sizeOf($totalInCity($city->getSlug())); ?>
                     </a>
                 </li>
             <?php endforeach; ?>

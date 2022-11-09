@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\LoginUser;
 use App\Models\City;
 use App\Models\Realestate;
 use App\Models\User;
@@ -12,3 +13,4 @@ $connection = App\Core\Database\Connection::make($config['database']);
 User::setDB($connection);
 Realestate::setDB($connection);
 City::setDB($connection);
+LoginUser::setDB($connection);

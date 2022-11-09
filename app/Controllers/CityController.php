@@ -9,9 +9,9 @@ class CityController
 {
     public function show()
     {
-        $realestates = City::sortByCity($_GET['city']);
-        $cities = City::selectAll();
-        $totalInCity = fn ($slug) => City::sortByCity($slug);
+        $realestates = City::findBySlug($_GET['city'])->getRealestates();
+        $cities = City::all();
+        $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
         require 'views/index.view.php';
     }

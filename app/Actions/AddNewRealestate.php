@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Models\Realestate;
 use App\Models\User;
+use Exception;
 
 class AddNewRealestate
 {
@@ -34,14 +35,19 @@ class AddNewRealestate
     public function addRealestate(User $user, int $cityId, string $title, string $description, int $price, array $image)
     {
         $realestate = new Realestate;
+        $targetFile =  "/public/images/" . $image['name'];
 
         $realestate->setUser($user);
         $realestate->setCityId($cityId);
         $realestate->setTitle($title);
         $realestate->setDescription($description);
         $realestate->setPrice($price);
-        $realestate->setImage($image);
+        $realestate->setImage($targetFile);
 
-        $realestate->save();
+        if (move_uploaded_file($image['tmp_name'], SITE_ROOT . $targetFile)) {
+            $realestate->save();
+        } else {
+            throw new Exception('Image has not be uploaded');
+        }
     }
 }

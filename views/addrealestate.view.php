@@ -4,7 +4,7 @@
     <label class="text-sm mt-3" name="estate" for="">Select Estate</label>
     <select class="rounded-md p-2" name="estate" id="estate" required>
         <?php foreach ($cities as $city) : ?>
-            <option value="<?= $city->id; ?>"><?= $city->name; ?></option>
+            <option value="<?= $city->getId(); ?>"><?= $city->getName(); ?></option>
         <?php endforeach; ?>
     </select>
 

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Core\Database\QueryBuilder;
 use App\Models\City;
 use App\Models\Realestate;
 use App\Models\User;
@@ -11,14 +10,27 @@ class RealestateController
 {
     public function show()
     {
-        $selectAll = Realestate::selectAll();
-        $cities = City::selectAll();
-        $totalInCity = fn ($slug) => City::sortByCity($slug);
+        // set data for page
+        $realestate = Realestate::find($_GET['estate']);
+        $cities = City::all();
+        $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
-        $realestate = $selectAll[array_search($_GET['estate'], array_column($selectAll, 'id'))];
+        // check if realestate is favourite
         if (isset($_SESSION['user']['id'])) {
-            $isFavourite = (User::find($_SESSION['user']['id']))->isFavourite(Realestate::find($realestate->id));
+            $isFavourite = (User::find($_SESSION['user']['id']))->isFavourite(Realestate::find($realestate->getId()));
         }
+
+        // $user = $this->getLoggedInUser();
+        // if (!$user) {
+        // header('Location....')
+        // }
+
         require 'views/singleRealestate.view.php';
     }
+
+    // ovo u parent kontroler
+    // public function getLoggedInUser(): ?User
+    // {
+    //     // ($_SESSION['user']['id'])
+    // }
 }

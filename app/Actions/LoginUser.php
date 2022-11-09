@@ -2,15 +2,14 @@
 
 namespace App\Actions;
 
-use App\Core\Database\QueryBuilder;
 use PDO;
 
 class LoginUser
 {
-    protected QueryBuilder $query;
-    public function __construct(QueryBuilder $query)
+    protected static PDO $connection;
+    public static function setDB(PDO $connection)
     {
-        $this->query = $query;
+        static::$connection = $connection;
     }
 
     public function validate($params)
@@ -23,7 +22,7 @@ class LoginUser
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $sql = "SELECT * FROM users WHERE email = :email";
-                $handle = $this->query->pdo->prepare($sql);
+                $handle = static::$connection->prepare($sql);
                 $params = ['email' => $email];
                 $handle->execute($params);
 

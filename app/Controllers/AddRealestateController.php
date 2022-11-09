@@ -47,7 +47,7 @@ class AddRealestateController
 
     public function create()
     {
-        $cities = City::selectAll();
+        $cities = City::all();
         $errors = $_SESSION['errors'];
         require 'views/addrealestate.view.php';
     }

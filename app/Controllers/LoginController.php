@@ -2,16 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Core\Database\QueryBuilder;
 use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
 use PDOException;
 
 class LoginController
 {
-    public function login(QueryBuilder $query)
+    public function login()
     {
-        $loginUserAction = new LoginUser($query);
+        $loginUserAction = new LoginUser();
         $errors = [];
 
         if ($_POST) {

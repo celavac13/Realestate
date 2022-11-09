@@ -15,18 +15,33 @@ class User
 
     public function __construct(array $data = [])
     {
-        $this->id = $data['id'];
-        $this->username = $data['username'];
-        $this->name = $data['name'];
-        $this->email = $data['email'];
-        $this->password = $data['password'];
+        if (isset($data['id'])) {
+            $this->id = $data['id'];
+        }
+
+        if (isset($data['username'])) {
+            $this->username = $data['username'];
+        }
+
+        if (isset($data['name'])) {
+            $this->name = $data['name'];
+        }
+
+        if (isset($data['email'])) {
+            $this->email = $data['email'];
+        }
+
+        if (isset($data['password'])) {
+            $this->password = $data['password'];
+        }
     }
 
+
+    // set methods
     public static function setDB(PDO $connection)
     {
         static::$connection = $connection;
     }
-
     public function setId(int $id)
     {
         $this->id = $id;
@@ -48,6 +63,15 @@ class User
         $this->password = $password;
     }
 
+
+    // get methods
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    // query methods
     public static function find(int $id): self
     {
         $sql = "SELECT * FROM users WHERE id = :id";
@@ -105,7 +129,7 @@ class User
     {
         $handle = static::$connection->prepare(
             "SELECT 
-            * 
+            realestates.* 
             FROM 
             favourites 
             LEFT JOIN realestates on favourites.realestate_id = realestates.id 
@@ -115,8 +139,11 @@ class User
             ':user_id' => $this->id
         ];
         $handle->execute($params);
-
-        return $handle->fetchAll(PDO::FETCH_OBJ);
+        $data = $handle->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($data as $realestate) {
+            $realestates[] = new Realestate($realestate);
+        }
+        return $realestates;
     }
 
     public function isFavourite(Realestate $realestate): bool
@@ -128,11 +155,7 @@ class User
             ':realestate_id' => $realestate->getId()
         ];
         $handle->execute($params);
-        $data = $handle->fetchAll();
-        if ($data) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return (bool)$handle->fetchAll();
     }
 }
