@@ -3,20 +3,21 @@
 namespace App\Controllers;
 
 use App\Core\Database\QueryBuilder;
+use App\Models\City;
+use App\Models\Realestate;
 use App\Models\User;
 
 class RealestateController
 {
-    public function show(QueryBuilder $query, $cities, $totalInCity)
+    public function show()
     {
-        $selectAll = $query->selectAll('realestates');
+        $selectAll = Realestate::selectAll();
+        $cities = City::selectAll();
+        $totalInCity = fn ($slug) => City::sortByCity($slug);
+
         $realestate = $selectAll[array_search($_GET['estate'], array_column($selectAll, 'id'))];
         if (isset($_SESSION['user']['id'])) {
-            $allFavourites = User::getAllFavouriteRealestate();
-            $isFavourite = false;
-            if (array_search($realestate->id, array_column($allFavourites, 'realestate_id')) !== false) {
-                $isFavourite = true;
-            }
+            $isFavourite = (User::find($_SESSION['user']['id']))->isFavourite(Realestate::find($realestate->id));
         }
         require 'views/singleRealestate.view.php';
     }

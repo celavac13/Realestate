@@ -2,25 +2,18 @@
 
 namespace App\Actions;
 
-use App\Core\Database\QueryBuilder;
 use App\Models\Realestate;
-use FFI\Exception;
+use App\Models\User;
 
 class AddNewRealestate
 {
-    protected QueryBuilder $query;
-    public function __construct(QueryBuilder $query)
-    {
-        $this->query = $query;
-    }
-
     public function validate($params)
     {
         extract($params);
         $result = [];
         if (
-            isset($userId, $cityId, $title, $description, $price, $image)
-            && !empty($userId)
+            isset($user, $cityId, $title, $description, $price, $image)
+            && !empty($user)
             && !empty($cityId)
             && !empty($title)
             && !empty($description)
@@ -38,11 +31,11 @@ class AddNewRealestate
         }
     }
 
-    public function addRealestate(int $userId, int $cityId, string $title, string $description, int $price, array $image)
+    public function addRealestate(User $user, int $cityId, string $title, string $description, int $price, array $image)
     {
         $realestate = new Realestate;
 
-        $realestate->setUserId($userId);
+        $realestate->setUser($user);
         $realestate->setCityId($cityId);
         $realestate->setTitle($title);
         $realestate->setDescription($description);

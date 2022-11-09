@@ -5,13 +5,11 @@ namespace App\Controllers;
 use App\Actions\RegisterUser;
 use PDOException;
 
-use App\Core\Database\QueryBuilder;
-
 class RegisterController
 {
-    public function register(QueryBuilder $query)
+    public function register()
     {
-        $registerUserAction = new RegisterUser($query);
+        $registerUserAction = new RegisterUser;
         $errors = [];
 
         if ($_POST) {

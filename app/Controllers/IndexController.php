@@ -2,13 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Core\Database\QueryBuilder;
+use App\Models\City;
+use App\Models\Realestate;
 
 class IndexController
 {
-    public function index(QueryBuilder $query)
+    public function index()
     {
-        $realestates = $query->selectAll("realestates");
+        $realestates = Realestate::selectAll();
+        $cities = City::selectAll();
+        $totalInCity = fn ($slug) => City::sortByCity($slug);
 
         require 'views/index.view.php';
     }

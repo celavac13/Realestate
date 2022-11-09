@@ -7,18 +7,18 @@ switch ($request) {
     case '':
     case '/':
         $homePage = new App\Controllers\IndexController;
-        $homePage->index($query);
+        $homePage->index();
         break;
 
     case 'city':
 
         $realestates = new App\Controllers\CityController;
-        $realestates->show($query, $cities, $totalInCity);
+        $realestates->show();
         break;
 
     case 'estate':
         $realestate = new App\Controllers\RealestateController;
-        $realestate->show($query, $cities, $totalInCity);
+        $realestate->show();
         break;
 
     case 'login':
@@ -33,13 +33,13 @@ switch ($request) {
 
     case 'register':
         $register = new App\Controllers\RegisterController;
-        $register->register($query);
+        $register->register();
         break;
 
     case 'add-realestate':
         $addNew = new App\Controllers\AddRealestateController;
-        $addNew->store($query);
-        $addNew->create($cities);
+        $addNew->store();
+        $addNew->create();
         break;
 
     case 'favourites':
@@ -48,12 +48,12 @@ switch ($request) {
         break;
 
     case 'add-favourites':
-        $addFavourites = (new App\Controllers\FavouritesController)->handleFavourites();
+        $addFavourites = new App\Controllers\FavouritesController;
         $addFavourites->addToFavourites();
         break;
 
     case 'remove-favourites':
-        $addFavourites = (new App\Controllers\FavouritesController)->handleFavourites();
+        $addFavourites = new App\Controllers\FavouritesController;
         $addFavourites->removeFromFavourites();
         break;
 

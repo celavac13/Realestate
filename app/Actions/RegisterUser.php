@@ -7,12 +7,6 @@ use App\Models\User;
 
 class RegisterUser
 {
-    protected QueryBuilder $query;
-    public function __construct(QueryBuilder $query)
-    {
-        $this->query = $query;
-    }
-
     public function validate(array $params)
     {
         extract($params);

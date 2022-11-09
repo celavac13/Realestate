@@ -13,6 +13,15 @@ class User
     protected string $email;
     protected string $password;
 
+    public function __construct(array $data = [])
+    {
+        $this->id = $data['id'];
+        $this->username = $data['username'];
+        $this->name = $data['name'];
+        $this->email = $data['email'];
+        $this->password = $data['password'];
+    }
+
     public static function setDB(PDO $connection)
     {
         static::$connection = $connection;
@@ -39,6 +48,19 @@ class User
         $this->password = $password;
     }
 
+    public static function find(int $id): self
+    {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $handle = static::$connection->prepare($sql);
+        $params = [
+            ':id' => $id
+        ];
+        $handle->execute($params);
+        $data = $handle->fetchAll(PDO::FETCH_ASSOC)[0];
+        $data['id'] = (int) $data['id'];
+        return new self($data);
+    }
+
     public function save()
     {
         $sql = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
@@ -53,37 +75,33 @@ class User
         $handle->execute($params);
     }
 
-    public function addToFavourites()
+    public function addToFavourites(Realestate $realestate): bool
     {
         $sql = 'INSERT INTO favourites (user_id, realestate_id) VALUES(:user_id, :realestate_id)';
         $handle = static::$connection->prepare($sql);
         $params = [
-            ':user_id' => $_SESSION['user']['id'],
-            ':realestate_id' => $_GET['realestateId']
+            ':user_id' => $this->id,
+            ':realestate_id' => $realestate->getId()
         ];
-        $handle->execute($params);
-
-        echo json_encode(['status' => true, 'message' => 'succesfully added to favourites']);
+        return $handle->execute($params);
     }
 
-    public function removeFromFavourites()
+    public function removeFromFavourites(Realestate $realestate): bool
     {
         $sql = 'DELETE FROM favourites WHERE user_id = :user_id AND realestate_id = :realestate_id';
         $handle = static::$connection->prepare($sql);
         $params = [
-            ':user_id' => $_GET['userId'],
-            ':realestate_id' => $_GET['realestateId']
+            ':user_id' => $this->id,
+            ':realestate_id' => $realestate->getId()
         ];
-        $handle->execute($params);
-
-        echo json_encode(['status' => true, 'message' => 'succesfully removed from favourites']);
+        return $handle->execute($params);
     }
 
     /**
      *
      * @return Realestate[]
      */
-    public static function getFavouriteRealestates(): array
+    public function getFavouriteRealestates(): array
     {
         $handle = static::$connection->prepare(
             "SELECT 
@@ -94,24 +112,27 @@ class User
             WHERE favourites.user_id = :user_id"
         );
         $params = [
-            ':user_id' => $_SESSION['user']['id']
+            ':user_id' => $this->id
         ];
         $handle->execute($params);
 
         return $handle->fetchAll(PDO::FETCH_OBJ);
     }
 
-    //ako budes umeo dadaj kao i gore ovaj @return Realestate, tj napravi model za realestate tako da bude kao da je iz baze podataka
-    public static function getAllFavouriteRealestate(): array
+    public function isFavourite(Realestate $realestate): bool
     {
-        $handle = static::$connection->prepare(
-            "SELECT realestate_id FROM favourites WHERE user_id = :user_id"
-        );
+        $sql = "SELECT realestate_id FROM favourites WHERE user_id = :user_id and realestate_id = :realestate_id";
+        $handle = static::$connection->prepare($sql);
         $params = [
-            ':user_id' => $_SESSION['user']['id']
+            ':user_id' => $this->id,
+            ':realestate_id' => $realestate->getId()
         ];
         $handle->execute($params);
-
-        return $handle->fetchAll(PDO::FETCH_OBJ);
+        $data = $handle->fetchAll();
+        if ($data) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
