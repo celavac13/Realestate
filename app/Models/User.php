@@ -43,7 +43,7 @@ class User
     {
         $sql = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
 
-        $handle = static::$connection->pdo->prepare($sql);
+        $handle = static::$connection->prepare($sql);
         $params = [
             ':username' => $this->username,
             ':name' => $this->name,

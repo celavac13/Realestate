@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Core\Database\QueryBuilder;
+use App\Models\Realestate;
 use FFI\Exception;
 
 class AddNewRealestate
@@ -39,23 +40,15 @@ class AddNewRealestate
 
     public function addRealestate(int $userId, int $cityId, string $title, string $description, int $price, array $image)
     {
-        $targetFile =  "/public/images/" . $image['name'];
-        $query = "INSERT INTO realestates (user_id, city_id, title, description, price, image) VALUES (:userId, :cityId, :title, :description, :price, :image)";
+        $realestate = new Realestate;
 
-        if (move_uploaded_file($image['tmp_name'], SITE_ROOT . $targetFile)) {
-            $handle = $this->query->pdo->prepare($query);
-            $params = [
-                ':userId' => $userId,
-                ':cityId' => $cityId,
-                ':title' => $title,
-                ':description' => $description,
-                ':price' => $price,
-                ':image' => $targetFile
-            ];
-            $handle->execute($params);
-        } else {
+        $realestate->setUserId($userId);
+        $realestate->setCityId($cityId);
+        $realestate->setTitle($title);
+        $realestate->setDescription($description);
+        $realestate->setPrice($price);
+        $realestate->setImage($image);
 
-            throw new Exception('Image has not be uploaded');
-        }
+        $realestate->save();
     }
 }
