@@ -1,4 +1,4 @@
-<?php require('app/views/partials/header.php'); ?>
+<?php require('views/partials/header.php'); ?>
 
 <form action="/add-realestate" method="POST" class="flex flex-col w-1/2 m-auto mt-10" enctype="multipart/form-data">
     <label class="text-sm mt-3" name="estate" for="">Select Estate</label>
@@ -27,4 +27,4 @@
     <p><?= $error; ?></p>
 <?php endforeach; ?>
 
-<?php require('app/views/partials/footer.php'); ?>
+<?php require('views/partials/footer.php'); ?>

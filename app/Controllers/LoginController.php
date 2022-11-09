@@ -2,13 +2,10 @@
 
 namespace App\Controllers;
 
-use Core\Database\QueryBuilder;
+use App\Core\Database\QueryBuilder;
 use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
 use PDOException;
-
-require __DIR__ . '/../actions/LoginUser.php';
-require __DIR__ . '/../actions/LogoutUser.php';
 
 class LoginController
 {
@@ -37,7 +34,7 @@ class LoginController
             }
         }
 
-        require 'app/views/login.view.php';
+        require 'views/login.view.php';
     }
 
     public function logout()

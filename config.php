@@ -1,5 +1,7 @@
 <?php
 
+define('SITE_ROOT', realpath(dirname(__FILE__)));
+
 return [
     'database' => [
         'name' => 'realestate',

@@ -2,12 +2,10 @@
 
 namespace App\Controllers;
 
-use Core\Database\QueryBuilder;
+use App\Core\Database\QueryBuilder;
 use App\Actions\AddNewRealestate;
 use PDOException;
 use FFI\Exception;
-
-require 'app/actions/AddNewRealestate.php';
 
 class AddRealestateController
 {
@@ -50,7 +48,7 @@ class AddRealestateController
     public function create($cities)
     {
         $errors = $_SESSION['errors'];
-        require 'app/views/addrealestate.view.php';
+        require 'views/addrealestate.view.php';
     }
     // ovde posle prikazati te errore
     // napravi create

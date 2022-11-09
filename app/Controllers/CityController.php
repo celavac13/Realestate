@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use Core\Database\QueryBuilder;
+use App\Core\Database\QueryBuilder;
 
 class CityController
 {
     public function show(QueryBuilder $query, $cities, $totalInCity)
     {
         $realestates = $query->sortByCity($_GET['city']);
-        require 'app/views/index.view.php';
+        require 'views/index.view.php';
     }
 }

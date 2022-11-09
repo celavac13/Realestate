@@ -1,5 +1,4 @@
 let likeBtn = document.getElementById("likeBtn");
-
 likeBtn.addEventListener("click", () => {
   if (likeBtn.classList.contains("liked")) {
     let xmlhttp = new XMLHttpRequest();

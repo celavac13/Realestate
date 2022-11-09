@@ -2,7 +2,7 @@
 
 namespace App\Actions;
 
-use Core\Database\QueryBuilder;
+use App\Core\Database\QueryBuilder;
 use PDO;
 
 class LoginUser

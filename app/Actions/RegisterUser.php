@@ -2,7 +2,8 @@
 
 namespace App\Actions;
 
-use Core\Database\QueryBuilder;
+use App\Core\Database\QueryBuilder;
+use App\Models\User;
 
 class RegisterUser
 {
@@ -75,19 +76,12 @@ class RegisterUser
 
     public function register(string $username, string $name, string $email, string $password)
     {
-        $username = trim($username);
-        $name = trim($name);
-        $email = trim($email);
-        $password = trim($password);
-        $query = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
+        $user = new User();
+        $user->setUsername(trim($username));
+        $user->setName(trim($name));
+        $user->setEmail(trim($email));
+        $user->setPassword(trim($password));
 
-        $handle = $this->query->pdo->prepare($query);
-        $params = [
-            ':username' => $username,
-            ':name' => $name,
-            ':email' => $email,
-            ':password' => $password
-        ];
-        $handle->execute($params);
+        $user->save();
     }
 }

@@ -5,9 +5,7 @@ namespace App\Controllers;
 use App\Actions\RegisterUser;
 use PDOException;
 
-use Core\Database\QueryBuilder;
-
-require __DIR__ . '/../actions/RegisterUser.php';
+use App\Core\Database\QueryBuilder;
 
 class RegisterController
 {
@@ -36,6 +34,6 @@ class RegisterController
                 $errors[] = $result['errors'];
             }
         }
-        require 'app/views/register.view.php';
+        require 'views/register.view.php';
     }
 }

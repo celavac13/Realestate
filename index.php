@@ -1,12 +1,15 @@
 <?php
-session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-define('SITE_ROOT', realpath(dirname(__FILE__)));
 
-$query = require 'core/bootstrap.php';
+require 'bootstrap.php';
+session_start();
+
+use App\Core\Database\QueryBuilder;
+
+$query = new QueryBuilder($connection);
 
 $cities = $query->selectAll("cities");
 $totalInCity = fn ($slug) => $query->sortByCity($slug);
 
-require 'app/routes.php';
+require 'routes.php';
