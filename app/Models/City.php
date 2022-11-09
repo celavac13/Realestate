@@ -4,12 +4,12 @@ namespace App\Models;
 
 use PDO;
 
-class City
+class City extends Model
 {
-    protected static PDO $connection;
     protected int $id;
     protected string $name;
     protected string $slug;
+    protected static string $table = "cities";
 
     public function __construct(array $data = [])
     {
@@ -24,13 +24,6 @@ class City
         if (isset($data['slug'])) {
             $this->slug = $data['slug'];
         }
-    }
-
-
-    // set methods
-    public static function setDB(PDO $connection)
-    {
-        static::$connection = $connection;
     }
 
 
@@ -65,22 +58,6 @@ class City
     }
 
     /**
-     * @return static[]
-     */
-    public static function all(): array
-    {
-        $handle = static::$connection->prepare("SELECT * FROM cities");
-        $handle->execute();
-        $data = $handle->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($data as $city) {
-            $city['id'] = (int) $city['id'];
-            $cities[] = new self($city);
-        }
-        return $cities;
-    }
-
-    /**
      * @return Realestate[]
      */
     public function getRealestates(): array
@@ -98,7 +75,7 @@ class City
         ];
         $handle->execute($params);
         $data = $handle->fetchAll(PDO::FETCH_ASSOC);
-
+        $realestates = [];
         foreach ($data as $realestate) {
             $realestate['id'] = (int) $realestate['id'];
             $realestates[] = new Realestate($realestate);

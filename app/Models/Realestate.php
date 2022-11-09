@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Exception;
 use PDO;
 
-class Realestate
+class Realestate extends Model
 {
-    protected static PDO $connection;
+    // protected static PDO $connection;
     protected int $id;
     protected User $user;
     protected int $userId;
@@ -16,6 +15,7 @@ class Realestate
     protected string $description;
     protected int $price;
     protected string $image;
+    protected static string $table = "realestates";
 
     public function __construct(array $data = [])
     {
@@ -50,10 +50,6 @@ class Realestate
 
 
     // set methods
-    public static function setDB(PDO $connection)
-    {
-        static::$connection = $connection;
-    }
     public function setUser(User $user)
     {
         $this->user = $user;
@@ -101,21 +97,6 @@ class Realestate
 
 
     // query methods
-    public static function find(int $id): self
-    {
-        $sql = "SELECT * FROM realestates WHERE id = :id";
-        $handle = static::$connection->prepare($sql);
-        $params = [
-            ':id' => $id
-        ];
-        $handle->execute($params);
-        $data = $handle->fetchAll(PDO::FETCH_ASSOC)[0];
-        $data['id'] = (int) $data['id'];
-        $data['user_id'] = User::find($data['user_id'])->getId();
-
-        return new self($data);
-    }
-
     public function save()
     {
         $sql = "INSERT INTO realestates (user_id, city_id, title, description, price, image) VALUES (:userId, :cityId, :title, :description, :price, :image)";
@@ -129,21 +110,5 @@ class Realestate
             ':image' => $this->image
         ];
         $handle->execute($params);
-    }
-
-    /**
-     * @return Realestate[]
-     */
-    public static function all()
-    {
-        $sql = "SELECT * FROM realestates";
-        $handle = static::$connection->prepare($sql);
-        $handle->execute();
-        $data = $handle->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($data as $realestate) {
-            $realestate['id'] = (int) $realestate['id'];
-            $realestates[] = new self($realestate);
-        }
-        return $realestates;
     }
 }

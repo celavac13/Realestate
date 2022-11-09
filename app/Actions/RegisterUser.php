@@ -4,9 +4,16 @@ namespace App\Actions;
 
 use App\Core\Database\QueryBuilder;
 use App\Models\User;
+use PDO;
 
 class RegisterUser
 {
+    protected static PDO $connection;
+    public static function setDB(PDO $connection)
+    {
+        static::$connection = $connection;
+    }
+
     public function validate(array $params)
     {
         extract($params);
@@ -26,7 +33,7 @@ class RegisterUser
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $query = 'SELECT * FROM users WHERE email = :email';
-                $handle = $this->query->pdo->prepare($query);
+                $handle = static::$connection->prepare($query);
                 $params = ['email' => $email];
                 $handle->execute($params);
 

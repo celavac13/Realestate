@@ -4,14 +4,14 @@ namespace App\Models;
 
 use PDO;
 
-class User
+class User extends Model
 {
-    protected static PDO $connection;
     protected int $id;
     protected string $username;
     protected string $name;
     protected string $email;
     protected string $password;
+    protected static string $table = "users";
 
     public function __construct(array $data = [])
     {
@@ -38,10 +38,6 @@ class User
 
 
     // set methods
-    public static function setDB(PDO $connection)
-    {
-        static::$connection = $connection;
-    }
     public function setId(int $id)
     {
         $this->id = $id;
@@ -72,19 +68,6 @@ class User
 
 
     // query methods
-    public static function find(int $id): self
-    {
-        $sql = "SELECT * FROM users WHERE id = :id";
-        $handle = static::$connection->prepare($sql);
-        $params = [
-            ':id' => $id
-        ];
-        $handle->execute($params);
-        $data = $handle->fetchAll(PDO::FETCH_ASSOC)[0];
-        $data['id'] = (int) $data['id'];
-        return new self($data);
-    }
-
     public function save()
     {
         $sql = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
@@ -140,9 +123,11 @@ class User
         ];
         $handle->execute($params);
         $data = $handle->fetchAll(PDO::FETCH_ASSOC);
+        $realestates = [];
         foreach ($data as $realestate) {
             $realestates[] = new Realestate($realestate);
         }
+
         return $realestates;
     }
 
