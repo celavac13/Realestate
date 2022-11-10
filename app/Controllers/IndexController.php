@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\City;
 use App\Models\Realestate;
 
-class IndexController
+class IndexController extends Controller
 {
     public function index()
     {

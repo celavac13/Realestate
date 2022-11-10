@@ -8,7 +8,7 @@ use App\Models\User;
 use PDOException;
 use FFI\Exception;
 
-class AddRealestateController
+class AddRealestateController extends Controller
 {
     //store
     public function store()
@@ -18,7 +18,7 @@ class AddRealestateController
 
         if ($_POST) {
             $params = [
-                'user' => User::find($_SESSION['user']['id']),
+                'user' => User::find($this->getLoggedInUser()),
                 'cityId' => $_POST['estate'],
                 'title' => $_POST['title'],
                 'description' => $_POST['description'],

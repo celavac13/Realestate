@@ -6,7 +6,7 @@ use App\Core\Database\QueryBuilder;
 use App\Models\Realestate;
 use App\Models\User;
 
-class FavouritesController
+class FavouritesController extends Controller
 {
     public function show()
     {

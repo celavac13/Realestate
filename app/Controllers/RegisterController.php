@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Actions\RegisterUser;
 use PDOException;
 
-class RegisterController
+class RegisterController extends Controller
 {
     public function register()
     {

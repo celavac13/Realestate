@@ -6,7 +6,7 @@ use App\Models\City;
 use App\Models\Realestate;
 use App\Models\User;
 
-class RealestateController
+class RealestateController extends Controller
 {
     public function show()
     {
@@ -16,8 +16,8 @@ class RealestateController
         $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
         // check if realestate is favourite
-        if (isset($_SESSION['user']['id'])) {
-            $isFavourite = (User::find($_SESSION['user']['id']))->isFavourite(Realestate::find($realestate->getId()));
+        if (NULL !== $this->getLoggedInUser()) {
+            $isFavourite = (User::find($this->getLoggedInUser()))->isFavourite(Realestate::find($realestate->getId()));
         }
 
         // $user = $this->getLoggedInUser();

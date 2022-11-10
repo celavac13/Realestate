@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Controllers\Controller;
 use PDO;
 
 class LoginUser
@@ -54,6 +55,7 @@ class LoginUser
     public function login($userInfo)
     {
         unset($userInfo['password']);
+        new Controller($userInfo);
         $_SESSION['user'] = $userInfo;
     }
 }

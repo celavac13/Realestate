@@ -6,7 +6,7 @@ use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
 use PDOException;
 
-class LoginController
+class LoginController extends Controller
 {
     public function login()
     {

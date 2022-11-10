@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Core\Database\QueryBuilder;
 use App\Models\City;
 
-class CityController
+class CityController extends Controller
 {
     public function show()
     {
