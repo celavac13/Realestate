@@ -4,15 +4,15 @@ namespace App\Controllers;
 
 use App\Actions\AddNewRealestate;
 use App\Actions\EditRealestate;
+use App\Cache\CacheInterface;
 use App\Models\City;
 use App\Models\Realestate;
 use Exception;
 use PDOException;
-use Predis\Client;
 
 class RealestateController extends Controller
 {
-    public function store(Client $client)
+    public function store(CacheInterface $cache)
     {
         $user = $this->getLoggedInUser();
 
@@ -39,7 +39,7 @@ class RealestateController extends Controller
                 try {
                     $errors[] = $addNewAction->addRealestate($this->getLoggedInUser(), $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
                     //brisemo ovaj key iz cache-a
-                    $client->del(Realestate::CACHE_KEY_ALL);
+                    $cache->del(Realestate::CACHE_KEY_ALL);
                     return $this->redirect('/');
                 } catch (PDOException | Exception $e) {
 
@@ -61,14 +61,14 @@ class RealestateController extends Controller
         require '../views/addrealestate.view.php';
     }
 
-    public function show(Client $client)
+    public function show(CacheInterface $cache)
     {
         // set data for page
-        $realestate = unserialize($client->get(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE)));
+        $realestate = $cache->get(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE));
 
         if (!$realestate) {
             $realestate = Realestate::find($_GET['estate']);
-            $client->set(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE), serialize($realestate), 'EX', Realestate::CACHE_EXPIRATION);
+            $cache->set(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE), $realestate, Realestate::CACHE_EXPIRATION);
         }
         $cities = City::all();
         $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
@@ -81,7 +81,7 @@ class RealestateController extends Controller
         require '../views/singleRealestate.view.php';
     }
 
-    public function update(Client $client)
+    public function update(CacheInterface $cache)
     {
         $editRealestate = new EditRealestate;
         $realestate = Realestate::find($_GET['estate']);
@@ -99,8 +99,8 @@ class RealestateController extends Controller
             if (array_key_exists('validate', $result)) {
                 try {
                     $editRealestate->editRealestate($_POST['city'], $_POST['title'], $_POST['description'], $_POST['price'], $realestate);
-                    $client->del(Realestate::CACHE_KEY_ALL);
-                    $client->del(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE));
+                    $cache->del(Realestate::CACHE_KEY_ALL);
+                    $cache->del(str_replace('{id}', $_GET['estate'], Realestate::CACHE_KEY_SINGLE));
                     return $this->redirect('/');
                 } catch (PDOException | Exception $e) {
                     $errors[] = $e->getMessage();

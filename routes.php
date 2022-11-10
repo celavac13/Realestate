@@ -6,7 +6,7 @@ switch ($request) {
 
     case '':
         $homePage = new App\Controllers\IndexController;
-        $homePage->index($client);
+        $homePage->index($cache);
         break;
 
     case 'city':
@@ -17,7 +17,7 @@ switch ($request) {
 
     case 'estate':
         $realestate = new App\Controllers\RealestateController;
-        $realestate->show($client);
+        $realestate->show($cache);
         break;
 
     case 'login':
@@ -37,7 +37,7 @@ switch ($request) {
 
     case 'add-realestate':
         $addNew = new App\Controllers\RealestateController;
-        $addNew->store($client);
+        $addNew->store($cache);
         $addNew->create();
         break;
 
@@ -63,7 +63,7 @@ switch ($request) {
 
     case 'update':
         $editRealestate = new App\Controllers\RealestateController;
-        $editRealestate->update($client);
+        $editRealestate->update($cache);
         break;
 
     default:
