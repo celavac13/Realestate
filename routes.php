@@ -22,7 +22,7 @@ switch ($request) {
 
     case 'login':
         $login = new App\Controllers\LoginController;
-        $login->login();
+        $login->login($connection);
         break;
 
     case 'logout':
@@ -32,7 +32,7 @@ switch ($request) {
 
     case 'register':
         $register = new App\Controllers\RegisterController;
-        $register->register();
+        $register->register($connection);
         break;
 
     case 'add-realestate':

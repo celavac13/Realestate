@@ -65,6 +65,10 @@ class User extends Model
     {
         return $this->id;
     }
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
 
     // query methods

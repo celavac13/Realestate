@@ -3,9 +3,16 @@
 namespace App\Actions;
 
 use App\Models\User;
+use PDO;
 
-class RegisterUser extends Action
+class RegisterUser
 {
+    protected PDO $connection;
+    public function __construct(PDO $connection)
+    {
+        $this->connection = $connection;
+    }
+
     public function validate(array $params)
     {
         extract($params);
@@ -25,7 +32,7 @@ class RegisterUser extends Action
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $query = 'SELECT * FROM users WHERE email = :email';
-                $handle = static::$connection->prepare($query);
+                $handle = $this->connection->prepare($query);
                 $params = ['email' => $email];
                 $handle->execute($params);
 

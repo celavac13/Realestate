@@ -12,18 +12,18 @@ class FavouritesController extends Controller
     {
         $user = $this->getLoggedInUser();
 
-        if (!$user) {
-            header('location: http://www.realestate.local');
+        if ($user === NULL) {
+            header('location: /');
         }
 
-        $realestates = User::find($this->getLoggedInUser())->getFavouriteRealestates();
+        $realestates = $this->getLoggedInUser()->getFavouriteRealestates();
 
         require 'views/favourites.view.php';
     }
 
     public function addToFavourites()
     {
-        $user = User::find($_SESSION['user']['id']);
+        $user = $this->getLoggedInUser();
         $realestate = Realestate::find($_GET['realestateId']);
         $user->addToFavourites($realestate);
 
@@ -32,7 +32,7 @@ class FavouritesController extends Controller
 
     public function removeFromFavourites()
     {
-        $user = User::find($_SESSION['user']['id']);
+        $user = $this->getLoggedInUser();
         $realestate = Realestate::find($_GET['realestateId']);
         $user->removeFromFavourites($realestate);
 

@@ -2,11 +2,16 @@
 
 namespace App\Actions;
 
-use App\Controllers\Controller;
 use PDO;
 
-class LoginUser extends Action
+class LoginUser
 {
+    protected PDO $connection;
+    public function __construct(PDO $connection)
+    {
+        $this->connection = $connection;
+    }
+
     public function validate($params)
     {
         extract($params);
@@ -17,7 +22,7 @@ class LoginUser extends Action
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $sql = "SELECT * FROM users WHERE email = :email";
-                $handle = static::$connection->prepare($sql);
+                $handle = $this->connection->prepare($sql);
                 $params = ['email' => $email];
                 $handle->execute($params);
 
@@ -49,7 +54,6 @@ class LoginUser extends Action
     public function login($userInfo)
     {
         unset($userInfo['password']);
-        new Controller($userInfo);
         $_SESSION['user'] = $userInfo;
     }
 }

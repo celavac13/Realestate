@@ -6,7 +6,7 @@ use App\Models\Realestate;
 use App\Models\User;
 use Exception;
 
-class AddNewRealestate extends Action
+class AddNewRealestate
 {
     public function validate($params)
     {

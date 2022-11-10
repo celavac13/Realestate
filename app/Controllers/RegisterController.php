@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 use App\Actions\RegisterUser;
+use PDO;
 use PDOException;
 
 class RegisterController extends Controller
 {
-    public function register()
+    public function register(PDO $connection)
     {
-        $registerUserAction = new RegisterUser;
+        $registerUserAction = new RegisterUser($connection);
         $errors = [];
 
         if ($_POST) {
@@ -24,7 +25,7 @@ class RegisterController extends Controller
             if (array_key_exists('validate', $result)) {
                 try {
                     $registerUserAction->register($_POST['username'], $_POST['name'], $_POST['email'], $_POST['password']);
-                    header('location: http://www.realestate.local');
+                    header('location: /');
                 } catch (PDOException $e) {
                     $errors[] = $e->getMessage();
                 }

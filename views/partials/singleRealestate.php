@@ -1,6 +1,6 @@
-<?php if (isset($_SESSION['user']['username'])) : ?>
+<?php if ($this->getLoggedInUser()) : ?>
     <div class="p-6 col-span-2">
-        <input type="hidden" id="userId" data-value="<?= $_SESSION['user']['id']; ?>" />
+        <input type="hidden" id="userId" data-value="<?= $this->getLoggedInUser()->getId(); ?>" />
         <input type="hidden" id="realestateId" data-value="<?= $realestate->getId(); ?>" />
         <p class="text-xl"><?= $realestate->getTitle(); ?></p>
         <img src="<?= $realestate->getImage(); ?>" alt="">

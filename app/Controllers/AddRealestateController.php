@@ -15,8 +15,8 @@ class AddRealestateController extends Controller
     {
         $user = $this->getLoggedInUser();
 
-        if (!$user) {
-            header('location: http://www.realestate.local');
+        if ($user === NULL) {
+            header('location: /');
         }
 
         $addNewAction = new AddNewRealestate;
@@ -24,7 +24,7 @@ class AddRealestateController extends Controller
 
         if ($_POST) {
             $params = [
-                'user' => User::find($this->getLoggedInUser()),
+                'user' => $this->getLoggedInUser(),
                 'cityId' => $_POST['estate'],
                 'title' => $_POST['title'],
                 'description' => $_POST['description'],
@@ -36,8 +36,8 @@ class AddRealestateController extends Controller
             if (array_key_exists('validate', $result)) {
 
                 try {
-                    $errors[] = $addNewAction->addRealestate(User::find($this->getLoggedInUser()), $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
-                    header('location: http://www.realestate.local');
+                    $errors[] = $addNewAction->addRealestate($this->getLoggedInUser(), $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
+                    header('location: /');
                 } catch (PDOException | Exception $e) {
 
                     $errors[] = $e->getMessage();

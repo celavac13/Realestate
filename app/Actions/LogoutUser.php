@@ -2,7 +2,7 @@
 
 namespace App\Actions;
 
-class LogoutUser extends Action
+class LogoutUser
 {
     public function logout()
     {

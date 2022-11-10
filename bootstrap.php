@@ -9,4 +9,3 @@ $config = require 'config.php';
 $connection = App\Core\Database\Connection::make($config['database']);
 
 Model::setDB($connection);
-Action::setDB($connection);

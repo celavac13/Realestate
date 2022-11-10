@@ -17,7 +17,7 @@ class RealestateController extends Controller
 
         // check if realestate is favourite
         if (NULL !== $this->getLoggedInUser()) {
-            $isFavourite = (User::find($this->getLoggedInUser()))->isFavourite(Realestate::find($realestate->getId()));
+            $isFavourite = $this->getLoggedInUser()->isFavourite(Realestate::find($realestate->getId()));
         }
 
         require 'views/singleRealestate.view.php';

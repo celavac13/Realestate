@@ -4,19 +4,20 @@ namespace App\Controllers;
 
 use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
+use PDO;
 use PDOException;
 
 class LoginController extends Controller
 {
-    public function login()
+    public function login(PDO $connection)
     {
         $user = $this->getLoggedInUser();
 
-        if ($user) {
-            header('location: http://www.realestate.local');
+        if ($user !== NULL) {
+            header('location: /');
         }
 
-        $loginUserAction = new LoginUser();
+        $loginUserAction = new LoginUser($connection);
         $errors = [];
 
         if ($_POST) {
@@ -33,7 +34,7 @@ class LoginController extends Controller
 
             if (array_key_exists('data', $result)) {
                 $loginUserAction->login($result['data']);
-                header('location: http://www.realestate.local');
+                header('location: /');
             } else {
                 $errors[] = $result['errors'];
             }
@@ -46,6 +47,6 @@ class LoginController extends Controller
     {
         $logoutUserAction = new LogoutUser();
         $logoutUserAction->logout();
-        header('location: http://www.realestate.local');
+        header('location: /');
     }
 }
