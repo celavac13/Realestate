@@ -5,14 +5,8 @@ namespace App\Actions;
 use App\Controllers\Controller;
 use PDO;
 
-class LoginUser
+class LoginUser extends Action
 {
-    protected static PDO $connection;
-    public static function setDB(PDO $connection)
-    {
-        static::$connection = $connection;
-    }
-
     public function validate($params)
     {
         extract($params);

@@ -2,18 +2,10 @@
 
 namespace App\Actions;
 
-use App\Core\Database\QueryBuilder;
 use App\Models\User;
-use PDO;
 
-class RegisterUser
+class RegisterUser extends Action
 {
-    protected static PDO $connection;
-    public static function setDB(PDO $connection)
-    {
-        static::$connection = $connection;
-    }
-
     public function validate(array $params)
     {
         extract($params);

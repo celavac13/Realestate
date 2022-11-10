@@ -10,6 +10,12 @@ class LoginController extends Controller
 {
     public function login()
     {
+        $user = $this->getLoggedInUser();
+
+        if ($user) {
+            header('location: http://www.realestate.local');
+        }
+
         $loginUserAction = new LoginUser();
         $errors = [];
 

@@ -7,6 +7,10 @@ class Controller
 
     public function getLoggedInUser()
     {
-        return $_SESSION['user']['id'];
+        if (isset($_SESSION['user']['id'])) {
+            return $_SESSION['user']['id'];
+        } else {
+            return false;
+        }
     }
 }

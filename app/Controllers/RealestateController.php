@@ -20,17 +20,6 @@ class RealestateController extends Controller
             $isFavourite = (User::find($this->getLoggedInUser()))->isFavourite(Realestate::find($realestate->getId()));
         }
 
-        // $user = $this->getLoggedInUser();
-        // if (!$user) {
-        // header('Location....')
-        // }
-
         require 'views/singleRealestate.view.php';
     }
-
-    // ovo u parent kontroler
-    // public function getLoggedInUser(): ?User
-    // {
-    //     // ($_SESSION['user']['id'])
-    // }
 }

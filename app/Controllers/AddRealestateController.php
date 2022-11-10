@@ -13,6 +13,12 @@ class AddRealestateController extends Controller
     //store
     public function store()
     {
+        $user = $this->getLoggedInUser();
+
+        if (!$user) {
+            header('location: http://www.realestate.local');
+        }
+
         $addNewAction = new AddNewRealestate;
         $errors = [];
 
@@ -30,7 +36,7 @@ class AddRealestateController extends Controller
             if (array_key_exists('validate', $result)) {
 
                 try {
-                    $errors[] = $addNewAction->addRealestate(User::find($_SESSION['user']['id']), $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
+                    $errors[] = $addNewAction->addRealestate(User::find($this->getLoggedInUser()), $_POST['estate'], $_POST['title'], $_POST['description'], $_POST['price'], $_FILES['image']);
                     header('location: http://www.realestate.local');
                 } catch (PDOException | Exception $e) {
 

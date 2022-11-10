@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use PDO;
-
 class Realestate extends Model
 {
     // protected static PDO $connection;

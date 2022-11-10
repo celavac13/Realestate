@@ -10,7 +10,13 @@ class FavouritesController extends Controller
 {
     public function show()
     {
-        $realestates = User::find($_SESSION['user']['id'])->getFavouriteRealestates();
+        $user = $this->getLoggedInUser();
+
+        if (!$user) {
+            header('location: http://www.realestate.local');
+        }
+
+        $realestates = User::find($this->getLoggedInUser())->getFavouriteRealestates();
 
         require 'views/favourites.view.php';
     }
