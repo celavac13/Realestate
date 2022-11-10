@@ -13,12 +13,12 @@ class FavouritesController extends Controller
         $user = $this->getLoggedInUser();
 
         if ($user === NULL) {
-            header('location: /');
+            return $this->redirect('/');
         }
 
         $realestates = $this->getLoggedInUser()->getFavouriteRealestates();
 
-        require 'views/favourites.view.php';
+        require '../views/favourites.view.php';
     }
 
     public function addToFavourites()

@@ -57,3 +57,5 @@ class LoginUser
         $_SESSION['user'] = $userInfo;
     }
 }
+
+var_dump('stefan');

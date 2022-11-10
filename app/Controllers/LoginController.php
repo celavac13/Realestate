@@ -14,7 +14,7 @@ class LoginController extends Controller
         $user = $this->getLoggedInUser();
 
         if ($user !== NULL) {
-            header('location: /');
+            return $this->redirect('/');
         }
 
         $loginUserAction = new LoginUser($connection);
@@ -34,19 +34,19 @@ class LoginController extends Controller
 
             if (array_key_exists('data', $result)) {
                 $loginUserAction->login($result['data']);
-                header('location: /');
+                return $this->redirect('/');
             } else {
                 $errors[] = $result['errors'];
             }
         }
 
-        require 'views/login.view.php';
+        require '../views/login.view.php';
     }
 
     public function logout()
     {
         $logoutUserAction = new LogoutUser();
         $logoutUserAction->logout();
-        header('location: /');
+        return $this->redirect('/');
     }
 }

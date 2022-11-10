@@ -25,7 +25,7 @@ class RegisterController extends Controller
             if (array_key_exists('validate', $result)) {
                 try {
                     $registerUserAction->register($_POST['username'], $_POST['name'], $_POST['email'], $_POST['password']);
-                    header('location: /');
+                    return $this->redirect('/');
                 } catch (PDOException $e) {
                     $errors[] = $e->getMessage();
                 }
@@ -33,6 +33,6 @@ class RegisterController extends Controller
                 $errors[] = $result['errors'];
             }
         }
-        require 'views/register.view.php';
+        require '../views/register.view.php';
     }
 }

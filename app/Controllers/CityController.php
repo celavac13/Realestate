@@ -13,6 +13,6 @@ class CityController extends Controller
         $cities = City::all();
         $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
-        require 'views/index.view.php';
+        require '../views/index.view.php';
     }
 }

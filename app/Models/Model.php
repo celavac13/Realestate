@@ -23,7 +23,6 @@ abstract class Model
         ];
         $handle->execute($params);
         $data = $handle->fetchAll(PDO::FETCH_ASSOC)[0];
-
         return new static($data);
     }
 

@@ -14,6 +14,10 @@ class Realestate extends Model
     protected int $price;
     protected string $image;
     protected static string $table = "realestates";
+    public const CACHE_KEY_ALL = 'all_realestates';
+    // str_replace('{id}', 'value')
+    public const CACHE_KEY_SINGLE = 'realestate_{id}';
+    public const CACHE_EXPIRATION = 20;
 
     public function __construct(array $data = [])
     {
@@ -80,6 +84,14 @@ class Realestate extends Model
     {
         return $this->id;
     }
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+    public function getCityId(): int
+    {
+        return $this->cityId;
+    }
     public function getTitle(): string
     {
         return $this->title;
@@ -87,6 +99,10 @@ class Realestate extends Model
     public function getDescription(): string
     {
         return $this->description;
+    }
+    public function getPrice(): int
+    {
+        return $this->price;
     }
     public function getImage(): string
     {
@@ -106,6 +122,20 @@ class Realestate extends Model
             ':description' => $this->description,
             ':price' => $this->price,
             ':image' => $this->image
+        ];
+        $handle->execute($params);
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE realestates SET city_id = :cityId, title = :title, description = :description, price = :price WHERE id = :realestateId";
+        $handle = static::$connection->prepare($sql);
+        $params = [
+            ':cityId' => $this->cityId,
+            ':title' => $this->title,
+            ':description' => $this->description,
+            ':price' => $this->price,
+            ':realestateId' => $this->id
         ];
         $handle->execute($params);
     }
