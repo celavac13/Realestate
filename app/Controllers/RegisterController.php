@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Actions\RegisterUser;
 use App\Core\Database\Connection;
-use PDO;
 use PDOException;
 
 class RegisterController extends Controller

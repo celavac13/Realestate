@@ -57,7 +57,11 @@ class RealestateController extends Controller
     public function create()
     {
         $cities = City::all();
-        $errors = $_SESSION['errors'];
+        if (isset($_SESSION['errors'])) {
+            $errors = $_SESSION['errors'];
+        } else {
+            $errors = [];
+        }
         require '../views/addrealestate.view.php';
     }
 
