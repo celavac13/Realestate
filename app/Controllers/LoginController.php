@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
+use App\Core\Database\Connection;
 use PDO;
 use PDOException;
 
 class LoginController extends Controller
 {
-    public function login(PDO $connection)
+    public function login(Connection $connection)
     {
         $user = $this->getLoggedInUser();
 

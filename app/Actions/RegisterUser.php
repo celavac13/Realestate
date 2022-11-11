@@ -2,13 +2,14 @@
 
 namespace App\Actions;
 
+use App\Core\Database\Connection;
 use App\Models\User;
 use PDO;
 
 class RegisterUser
 {
-    protected PDO $connection;
-    public function __construct(PDO $connection)
+    protected Connection $connection;
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -32,7 +33,7 @@ class RegisterUser
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $query = 'SELECT * FROM users WHERE email = :email';
-                $handle = $this->connection->prepare($query);
+                $handle = $this->connection->pdo->prepare($query);
                 $params = ['email' => $email];
                 $handle->execute($params);
 

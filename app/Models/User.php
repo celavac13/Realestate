@@ -76,7 +76,7 @@ class User extends Model
     {
         $sql = "INSERT into users (username, name, email, password) VALUES (:username, :name, :email, :password)";
 
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':username' => $this->username,
             ':name' => $this->name,
@@ -89,7 +89,7 @@ class User extends Model
     public function addToFavourites(Realestate $realestate): bool
     {
         $sql = 'INSERT INTO favourites (user_id, realestate_id) VALUES(:user_id, :realestate_id)';
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':user_id' => $this->id,
             ':realestate_id' => $realestate->getId()
@@ -100,7 +100,7 @@ class User extends Model
     public function removeFromFavourites(Realestate $realestate): bool
     {
         $sql = 'DELETE FROM favourites WHERE user_id = :user_id AND realestate_id = :realestate_id';
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':user_id' => $this->id,
             ':realestate_id' => $realestate->getId()
@@ -114,7 +114,7 @@ class User extends Model
      */
     public function getFavouriteRealestates(): array
     {
-        $handle = static::$connection->prepare(
+        $handle = static::$connection->pdo->prepare(
             "SELECT 
             realestates.* 
             FROM 
@@ -138,7 +138,7 @@ class User extends Model
     public function isFavourite(Realestate $realestate): bool
     {
         $sql = "SELECT realestate_id FROM favourites WHERE user_id = :user_id and realestate_id = :realestate_id";
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':user_id' => $this->id,
             ':realestate_id' => $realestate->getId()

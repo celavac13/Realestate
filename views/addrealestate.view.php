@@ -2,7 +2,7 @@
 
 <?php require('partials/homeLink.php') ?>
 
-<form action="/add-realestate" method="POST" class="flex flex-col w-1/2 m-auto mt-10" enctype="multipart/form-data">
+<form action="/add-realestate-store" method="POST" class="flex flex-col w-1/2 m-auto mt-10" enctype="multipart/form-data">
     <label class="text-sm mt-3" name="estate" for="">Select City</label>
     <select class="rounded-md p-2" name="estate" id="estate" required>
         <?php foreach ($cities as $city) : ?>

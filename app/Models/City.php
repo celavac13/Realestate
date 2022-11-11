@@ -46,7 +46,7 @@ class City extends Model
     public static function findBySlug(string $cityName): self
     {
         $sql = "SELECT * FROM cities WHERE slug = :slug";
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':slug' => $cityName
         ];
@@ -62,7 +62,7 @@ class City extends Model
      */
     public function getRealestates(): array
     {
-        $handle = static::$connection->prepare(
+        $handle = static::$connection->pdo->prepare(
             "SELECT 
             realestates.*
             FROM 

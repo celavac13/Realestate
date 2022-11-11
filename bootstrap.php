@@ -1,14 +1,12 @@
 <?php
 
-use App\Cache\RedisCache;
-use App\Models\Model;
+use App\Core\Config;
+use App\Core\Router;
+use DI\ContainerBuilder;
 
-require __DIR__ . '/vendor/autoload.php';
-$config = require 'config.php';
+require '../vendor/autoload.php';
+session_start();
 
-$connection = App\Core\Database\Connection::make($config['database']);
-
-Model::setDB($connection);
-$client = new Predis\Client();
-$redisCache = new RedisCache($client);
-$cache = $redisCache;
+$container = (new ContainerBuilder())->build();
+$router = new Router(require '../app/routes.php');
+$config = new Config(require('../config.php'));

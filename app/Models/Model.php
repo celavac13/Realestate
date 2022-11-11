@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Core\Database\Connection;
 use PDO;
 
 abstract class Model
 {
-    protected static PDO $connection;
+    protected static Connection $connection;
     protected static string $table;
 
-    public static function setDB(PDO $connection)
+    public static function setDB(Connection $connection)
     {
         static::$connection = $connection;
     }
@@ -17,7 +18,7 @@ abstract class Model
     public static function find(int $id)
     {
         $sql = 'SELECT * FROM ' . static::$table . ' WHERE id = :id';
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':id' => $id
         ];
@@ -29,7 +30,7 @@ abstract class Model
     public static function all(): array
     {
         $sql = "SELECT * FROM " . static::$table;
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $handle->execute();
         $data = $handle->fetchAll(PDO::FETCH_ASSOC);
         $result = [];

@@ -15,7 +15,6 @@ class Realestate extends Model
     protected string $image;
     protected static string $table = "realestates";
     public const CACHE_KEY_ALL = 'all_realestates';
-    // str_replace('{id}', 'value')
     public const CACHE_KEY_SINGLE = 'realestate_{id}';
     public const CACHE_EXPIRATION = 20;
 
@@ -114,7 +113,7 @@ class Realestate extends Model
     public function save()
     {
         $sql = "INSERT INTO realestates (user_id, city_id, title, description, price, image) VALUES (:userId, :cityId, :title, :description, :price, :image)";
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':userId' => $this->user->getId(),
             ':cityId' => $this->cityId,
@@ -129,7 +128,7 @@ class Realestate extends Model
     public function update()
     {
         $sql = "UPDATE realestates SET city_id = :cityId, title = :title, description = :description, price = :price WHERE id = :realestateId";
-        $handle = static::$connection->prepare($sql);
+        $handle = static::$connection->pdo->prepare($sql);
         $params = [
             ':cityId' => $this->cityId,
             ':title' => $this->title,

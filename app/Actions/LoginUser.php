@@ -2,12 +2,13 @@
 
 namespace App\Actions;
 
+use App\Core\Database\Connection;
 use PDO;
 
 class LoginUser
 {
-    protected PDO $connection;
-    public function __construct(PDO $connection)
+    protected Connection $connection;
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -22,7 +23,7 @@ class LoginUser
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $sql = "SELECT * FROM users WHERE email = :email";
-                $handle = $this->connection->prepare($sql);
+                $handle = $this->connection->pdo->prepare($sql);
                 $params = ['email' => $email];
                 $handle->execute($params);
 
@@ -57,5 +58,3 @@ class LoginUser
         $_SESSION['user'] = $userInfo;
     }
 }
-
-var_dump('stefan');
