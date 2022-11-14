@@ -5,12 +5,12 @@ namespace App\Controllers;
 use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
 use App\Core\Database\Connection;
-use PDO;
+use App\Core\Request;
 use PDOException;
 
 class LoginController extends Controller
 {
-    public function login(Connection $connection)
+    public function login(Connection $connection, Request $request)
     {
         $user = $this->getLoggedInUser();
 
@@ -23,8 +23,8 @@ class LoginController extends Controller
 
         if ($_POST) {
             $params = [
-                'email' => $_POST['email'],
-                'password' => $_POST['password']
+                'email' => $request->post('email'),
+                'password' => $request->post('password')
             ];
 
             try {
@@ -47,7 +47,7 @@ class LoginController extends Controller
     public function logout()
     {
         $logoutUserAction = new LogoutUser();
-        $logoutUserAction->logout();
+        $logoutUserAction->logout($this->getLoggedInUser());
         return $this->redirect('/');
     }
 }

@@ -3,8 +3,8 @@
 <?php require('partials/homeLink.php') ?>
 
 <form action="/add-realestate-store" method="POST" class="flex flex-col w-1/2 m-auto mt-10" enctype="multipart/form-data">
-    <label class="text-sm mt-3" name="estate" for="">Select City</label>
-    <select class="rounded-md p-2" name="estate" id="estate" required>
+    <label class="text-sm mt-3" name="city" for="">Select City</label>
+    <select class="rounded-md p-2" name="city" id="city" required>
         <?php foreach ($cities as $city) : ?>
             <option value="<?= $city->getId(); ?>"><?= $city->getName(); ?></option>
         <?php endforeach; ?>

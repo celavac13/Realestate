@@ -2,11 +2,13 @@
 
 namespace App\Actions;
 
+use App\Models\User;
+
 class LogoutUser
 {
-    public function logout()
+    public function logout(?User $user)
     {
-        if (isset($_SESSION['user']['username'])) {
+        if ($user) {
             session_destroy();
         }
     }

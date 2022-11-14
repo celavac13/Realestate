@@ -6,5 +6,5 @@
 
 <?php require('partials/singleRealestate.php') ?>
 
-<script src="public/js/likeBtn.js"></script>
+<script src="js/likeBtn.js"></script>
 <?php require('partials/footer.php') ?>

@@ -16,7 +16,7 @@ class Realestate extends Model
     protected static string $table = "realestates";
     public const CACHE_KEY_ALL = 'all_realestates';
     public const CACHE_KEY_SINGLE = 'realestate_{id}';
-    public const CACHE_EXPIRATION = 20;
+    public const CACHE_EXPIRATION = 1;
 
     public function __construct(array $data = [])
     {

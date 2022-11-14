@@ -9,8 +9,8 @@ class Router
     {
         $this->routes = $routes;
     }
-    public function getRoutes()
+    public function getRoutes(string $key)
     {
-        return $this->routes;
+        return $this->routes[$key];
     }
 }

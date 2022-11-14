@@ -2,9 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Core\Database\QueryBuilder;
+use App\Core\Request;
 use App\Models\Realestate;
-use App\Models\User;
 
 class FavouritesController extends Controller
 {
@@ -21,19 +20,19 @@ class FavouritesController extends Controller
         require '../views/favourites.view.php';
     }
 
-    public function addToFavourites()
+    public function addToFavourites(Request $request)
     {
         $user = $this->getLoggedInUser();
-        $realestate = Realestate::find($_GET['realestateId']);
+        $realestate = Realestate::find($request->get('realestateId'));
         $user->addToFavourites($realestate);
 
         echo json_encode(['status' => true, 'message' => 'succesfully added to favourites']);
     }
 
-    public function removeFromFavourites()
+    public function removeFromFavourites(Request $request)
     {
         $user = $this->getLoggedInUser();
-        $realestate = Realestate::find($_GET['realestateId']);
+        $realestate = Realestate::find($request->get('realestateId'));
         $user->removeFromFavourites($realestate);
 
         echo json_encode(['status' => true, 'message' => 'succesfully removed from favourites']);

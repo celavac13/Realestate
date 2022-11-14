@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Cache\CacheInterface;
-use App\Core\Database\Connection;
 use App\Models\City;
 use App\Models\Realestate;
 
