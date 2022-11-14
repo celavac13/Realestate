@@ -6,19 +6,20 @@ use App\Actions\LoginUser;
 use App\Actions\LogoutUser;
 use App\Core\Database\Connection;
 use App\Core\Request;
+use App\Core\Response;
 use PDOException;
 
 class LoginController extends Controller
 {
-    public function login(Connection $connection, Request $request)
+    public function login(Connection $connection, Request $request, Response $response): Response
     {
         $user = $this->getLoggedInUser();
 
         if ($user !== NULL) {
-            return $this->redirect('/');
+            return $response->redirect('/');
         }
 
-        $loginUserAction = new LoginUser($connection);
+        $loginUserAction = new LoginUser($connection, $request);
         $errors = [];
 
         if ($_POST) {
@@ -35,19 +36,19 @@ class LoginController extends Controller
 
             if (array_key_exists('data', $result)) {
                 $loginUserAction->login($result['data']);
-                return $this->redirect('/');
+                return $response->redirect('/');
             } else {
                 $errors[] = $result['errors'];
             }
         }
 
-        require '../views/login.view.php';
+        return $response->data(['errors' => $errors])->view('login');
     }
 
-    public function logout()
+    public function logout(Response $response): Response
     {
         $logoutUserAction = new LogoutUser();
         $logoutUserAction->logout($this->getLoggedInUser());
-        return $this->redirect('/');
+        return $response->redirect('/');
     }
 }

@@ -3,38 +3,39 @@
 namespace App\Controllers;
 
 use App\Core\Request;
+use App\Core\Response;
 use App\Models\Realestate;
 
 class FavouritesController extends Controller
 {
-    public function show()
+    public function show(Response $response): Response
     {
         $user = $this->getLoggedInUser();
 
         if ($user === NULL) {
-            return $this->redirect('/');
+            return $response->redirect('/');
         }
 
         $realestates = $this->getLoggedInUser()->getFavouriteRealestates();
 
-        require '../views/favourites.view.php';
+        return $response->data(['realestates' => $realestates, 'loggedInUser' => $this->getLoggedInUser()])->view('favourites');
     }
 
-    public function addToFavourites(Request $request)
+    public function addToFavourites(Request $request, Response $response): Response
     {
         $user = $this->getLoggedInUser();
         $realestate = Realestate::find($request->get('realestateId'));
         $user->addToFavourites($realestate);
 
-        echo json_encode(['status' => true, 'message' => 'succesfully added to favourites']);
+        return $response->data(['status' => true, 'message' => 'succesfully added to favourites'])->json();
     }
 
-    public function removeFromFavourites(Request $request)
+    public function removeFromFavourites(Request $request, Response $response): Response
     {
         $user = $this->getLoggedInUser();
         $realestate = Realestate::find($request->get('realestateId'));
         $user->removeFromFavourites($realestate);
 
-        echo json_encode(['status' => true, 'message' => 'succesfully removed from favourites']);
+        return $response->data(['status' => true, 'message' => 'succesfully removed from favourites'])->json();
     }
 }

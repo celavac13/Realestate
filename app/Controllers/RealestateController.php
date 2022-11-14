@@ -6,6 +6,7 @@ use App\Actions\AddNewRealestate;
 use App\Actions\EditRealestate;
 use App\Cache\CacheInterface;
 use App\Core\Request;
+use App\Core\Response;
 use App\Models\City;
 use App\Models\Realestate;
 use Exception;
@@ -13,12 +14,12 @@ use PDOException;
 
 class RealestateController extends Controller
 {
-    public function store(CacheInterface $cache, Request $request)
+    public function store(CacheInterface $cache, Request $request, Response $response): ?Response
     {
         $user = $this->getLoggedInUser();
 
         if ($user === NULL) {
-            return $this->redirect('/');
+            return $response->redirect('/');
         }
 
         $addNewAction = new AddNewRealestate;
@@ -39,9 +40,8 @@ class RealestateController extends Controller
 
                 try {
                     $errors[] = $addNewAction->addRealestate($this->getLoggedInUser(), $request->post('city'), $request->post('title'), $request->post('description'), $request->post('price'), $request->files('image'));
-                    //brisemo ovaj key iz cache-a
                     $cache->del(Realestate::CACHE_KEY_ALL);
-                    return $this->redirect('/');
+                    return $response->redirect('/');
                 } catch (PDOException | Exception $e) {
 
                     $errors[] = $e->getMessage();
@@ -55,20 +55,16 @@ class RealestateController extends Controller
         $_SESSION['errors'] = $errors;
     }
 
-    public function create()
+    public function create(Request $request, Response $response): Response
     {
         $cities = City::all();
-        if (isset($_SESSION['errors'])) {
-            $errors = $_SESSION['errors'];
-        } else {
-            $errors = [];
-        }
-        require '../views/addrealestate.view.php';
+        isset($_SESSION['errors']) ? $errors = $_SESSION['errors'] : $errors = [];
+
+        return $response->data(['cities' => $cities, 'errors' => $errors, 'loggedInUser' => $this->getLoggedInUser()])->view('addrealestate');
     }
 
-    public function show(CacheInterface $cache, Request $request)
+    public function show(CacheInterface $cache, Request $request, Response $response): Response
     {
-        // set data for page
         $realestate = $cache->get(str_replace('{id}', $request->get('estate'), Realestate::CACHE_KEY_SINGLE));
 
         if (!$realestate) {
@@ -78,15 +74,14 @@ class RealestateController extends Controller
         $cities = City::all();
         $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
-        // check if realestate is favourite
         if (NULL !== $this->getLoggedInUser()) {
             $isFavourite = $this->getLoggedInUser()->isFavourite(Realestate::find($realestate->getId()));
         }
 
-        require '../views/singleRealestate.view.php';
+        return $response->data(['realestate' => $realestate, '$cities' => $cities, 'totalInCity' => $totalInCity, 'isFavourite' => $isFavourite, 'loggedInUser' => $this->getLoggedInUser()])->view('singleRealestate');
     }
 
-    public function update(CacheInterface $cache, Request $request)
+    public function update(CacheInterface $cache, Request $request, Response $response): Response
     {
         $editRealestate = new EditRealestate;
         $realestate = Realestate::find($request->get('estate'));
@@ -106,7 +101,7 @@ class RealestateController extends Controller
                     $editRealestate->editRealestate($request->post('city'), $request->post('title'), $request->post('description'), $request->post('price'), $realestate);
                     $cache->del(Realestate::CACHE_KEY_ALL);
                     $cache->del(str_replace('{id}', $request->get('estate'), Realestate::CACHE_KEY_SINGLE));
-                    return $this->redirect('/');
+                    return $response->redirect('/');
                 } catch (PDOException | Exception $e) {
                     $errors[] = $e->getMessage();
                 }
@@ -116,15 +111,15 @@ class RealestateController extends Controller
         }
 
         $_SESSION['errors'] = $errors;
-        return $this->redirect("/edit?estate={$realestate->getId()}");
+        return $response->redirect("/edit?estate={$realestate->getId()}");
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, Response $response): Response
     {
         $cities = City::all();
-        $realestate = Realestate::find($request('estate'));
-        $errors = $_SESSION['errors'];
+        $realestate = Realestate::find($request->get('estate'));
+        isset($_SESSION['errors']) ? $errors = $_SESSION['errors'] : $errors = [];
 
-        require '../views/editRealestate.view.php';
+        return $response->data(['cities' => $cities, 'realestate' => $realestate, 'errors' => $errors, 'loggedInUser' => $this->getLoggedInUser()])->view('editRealestate');
     }
 }

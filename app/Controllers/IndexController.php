@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 use App\Cache\CacheInterface;
+use App\Core\Response;
 use App\Models\City;
 use App\Models\Realestate;
 
 class IndexController extends Controller
 {
-    public function index(CacheInterface $cache)
+    public function index(CacheInterface $cache, Response $response): Response
     {
         //proveravamo da li u cacheu postoji ovaj key sa vrednostima
         $realestates = $cache->get(Realestate::CACHE_KEY_ALL);
@@ -21,6 +22,6 @@ class IndexController extends Controller
         $cities = City::all();
         $totalInCity = fn ($slug) => City::findBySlug($slug)->getRealestates();
 
-        require '../views/index.view.php';
+        return $response->data(['realestates' => $realestates, 'cities' => $cities, 'totalInCity' => $totalInCity, 'loggedInUser' => $this->getLoggedInUser()])->view('index');
     }
 }

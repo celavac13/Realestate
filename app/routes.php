@@ -14,7 +14,7 @@ return [
     'login' => [LoginController::class, 'login'],
     'logout' => [LoginController::class, 'logout'],
     'register' => [RegisterController::class, 'register'],
-    'add-realestate-post' => [RealestateController::class, 'store'],
+    'add-realestate-store' => [RealestateController::class, 'store'],
     'add-realestate' => [RealestateController::class, 'create'],
     'favourites' => [FavouritesController::class, 'show'],
     'add-favourites' => [FavouritesController::class, 'addToFavourites'],

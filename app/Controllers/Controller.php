@@ -13,9 +13,4 @@ abstract class Controller
         }
         return NULL;
     }
-    //metoad redirect(url)
-    public function redirect(string $url)
-    {
-        header("location: {$url}");
-    }
 }

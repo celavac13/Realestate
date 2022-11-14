@@ -7,6 +7,6 @@ ini_set("display_errors", 1);
 
 require '../bootstrap.php';
 
-$app = new App($container, $router, $config, $request);
+$app = new App($container, $router, $config);
 $app->boot();
-$app->run($request);
+$app->run();

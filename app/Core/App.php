@@ -13,14 +13,12 @@ class App
     protected Container $container;
     protected Router $router;
     protected Config $config;
-    protected string $uri;
 
-    public function __construct(Container $container, Router $router, Config $config, string $uri)
+    public function __construct(Container $container, Router $router, Config $config)
     {
         $this->container = $container;
         $this->router = $router;
         $this->config = $config;
-        $this->uri = $uri;
     }
 
     public function boot()
@@ -28,16 +26,18 @@ class App
         $this->container->set(RedisCache::class, fn () => new RedisCache(new \Predis\Client()));
         $this->container->set(CacheInterface::class, fn () => $this->container->get(RedisCache::class));
         $this->container->set(Connection::class, fn () => Connection::make($this->config->get('database')));
-        $this->container->set(Request::class, fn () => new Request($this->uri));
+        $this->container->set(Request::class, fn () => new Request());
+        $this->container->set(Response::class, fn () => new Response());
         Model::setDB($this->container->get(Connection::class));
     }
 
     public function run()
     {
-        $this->container->call(
-            $this->router->getRoutes(
-                $this->container->call([Request::class, 'getUri'])
+        $response = $this->container->call(
+            $this->router->resolve(
+                $this->container->get(Request::class)
             )
         );
+        $response->send();
     }
 }

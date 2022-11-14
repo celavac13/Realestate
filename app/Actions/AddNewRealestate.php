@@ -35,7 +35,7 @@ class AddNewRealestate
     public function addRealestate(User $user, int $cityId, string $title, string $description, int $price, array $image)
     {
         $realestate = new Realestate;
-        $targetFile =  "/public/images/" . $image['name'];
+        $targetFile =  "/images/" . $image['name'];
 
         $realestate->setUser($user);
         $realestate->setCityId($cityId);

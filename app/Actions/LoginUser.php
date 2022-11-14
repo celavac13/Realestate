@@ -3,14 +3,17 @@
 namespace App\Actions;
 
 use App\Core\Database\Connection;
+use App\Core\Request;
 use PDO;
 
 class LoginUser
 {
     protected Connection $connection;
-    public function __construct(Connection $connection)
+    protected Request $request;
+    public function __construct(Connection $connection, Request $request)
     {
         $this->connection = $connection;
+        $this->request = $request;
     }
 
     public function validate($params)

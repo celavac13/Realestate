@@ -4,29 +4,35 @@ namespace App\Core;
 
 class Request
 {
-    protected string $uri;
-    public function __construct(string $uri)
+    protected array $server;
+    protected array $get;
+    protected array $post;
+    protected array $files;
+    public function __construct()
     {
-        $this->uri = trim(parse_url($uri, PHP_URL_PATH), '/');
+        $this->server = $_SERVER;
+        $this->get = $_GET;
+        $this->post = $_POST;
+        $this->files = $_FILES;
     }
 
     public function getUri()
     {
-        return $this->uri;
+        return trim(parse_url($this->server['REQUEST_URI'], PHP_URL_PATH), '/');
     }
 
     public function get(string $index)
     {
-        return $_GET["{$index}"];
+        return $this->get[$index];
     }
 
     public function post(string $index)
     {
-        return $_POST["{$index}"];
+        return $this->post[$index];
     }
 
     public function files(string $index)
     {
-        return $_FILES["{$index}"];
+        return $this->files[$index];
     }
 }
